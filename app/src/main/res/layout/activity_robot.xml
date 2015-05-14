@@ -1,0 +1,135 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:background="#FFFFFF" tools:context=".Robot">
+
+    <!-- This FrameLayout insets its children based on system windows using
+         android:fitsSystemWindows. -->
+    <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:id="@+id/robot">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/head"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="225">
+
+                <ImageView
+                    android:id="@+id/head_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/head"/>
+
+                <!-- The first city title -->
+                <TextView
+                    style="@style/Phase"
+                    android:text="@string/firstcity_txt"/>
+
+                <TextView
+                    style="@style/Action"
+                    android:id="@+id/head_txt"/>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/shoulders"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="150">
+
+                <ImageView
+                    android:id="@+id/shoulders_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/shoulders"/>
+
+                <!-- Phase 2 title -->
+                <TextView
+                    style="@style/Phase"
+                    android:text="@string/phase2_txt"/>
+
+                <TextView
+                    style="@style/Action"
+                    android:id="@+id/shoulders_txt"/>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/torso"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="145">
+
+                <ImageView
+                    android:id="@+id/torso_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/torso"/>
+
+                <!-- Phase 3 title -->
+                <TextView
+                    style="@style/Phase"
+                    android:text="@string/phase3_txt"/>
+
+                <TextView
+                    style="@style/Action"
+                    android:id="@+id/torso_txt"/>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/legs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="145">
+
+                <ImageView
+                    android:id="@+id/legs_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/legs"/>
+
+                <!-- Phase 4 title -->
+                <TextView
+                    style="@style/Phase"
+                    android:text="@string/phase4_txt"/>
+
+                <TextView
+                    style="@style/Action"
+                    android:id="@+id/legs_txt"/>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/feet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="210">
+
+                <ImageView
+                    android:id="@+id/feet_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/feet"/>
+
+                <!-- Special ability title -->
+                <TextView
+                    style="@style/Phase"
+                    android:text="@string/special_txt"/>
+
+                <TextView
+                    style="@style/Action"
+                    android:id="@+id/feet_txt" />
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</FrameLayout>

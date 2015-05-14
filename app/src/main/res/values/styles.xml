@@ -1,0 +1,25 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <!-- Style for the phase title -->
+    <style name="Phase">
+        <item name="android:textColor">#2d2d2d</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:typeface">monospace</item>
+    </style>
+
+    <!-- Style for the action description -->
+    <style name="Action">
+        <item name="android:textColor">#091100</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+</resources>
