@@ -28,7 +28,8 @@
                 <!-- The first city title -->
                 <TextView
                     style="@style/Phase"
-                    android:text="@string/firstcity_txt"/>
+                    android:text="@string/firstcity_txt"
+                    android:paddingBottom="5dp"/>
 
                 <TextView
                     style="@style/Action"
@@ -51,7 +52,8 @@
                 <!-- Phase 2 title -->
                 <TextView
                     style="@style/Phase"
-                    android:text="@string/phase2_txt"/>
+                    android:text="@string/phase2_txt"
+                    android:paddingBottom="85dp"/>
 
                 <TextView
                     style="@style/Action"
@@ -74,7 +76,8 @@
                 <!-- Phase 3 title -->
                 <TextView
                     style="@style/Phase"
-                    android:text="@string/phase3_txt"/>
+                    android:text="@string/phase3_txt"
+                    android:paddingBottom="65dp"/>
 
                 <TextView
                     style="@style/Action"
@@ -97,7 +100,8 @@
                 <!-- Phase 4 title -->
                 <TextView
                     style="@style/Phase"
-                    android:text="@string/phase4_txt"/>
+                    android:text="@string/phase4_txt"
+                    android:paddingBottom="90dp"/>
 
                 <TextView
                     style="@style/Action"
@@ -120,7 +124,8 @@
                 <!-- Special ability title -->
                 <TextView
                     style="@style/Phase"
-                    android:text="@string/special_txt"/>
+                    android:text="@string/special_txt"
+                    android:paddingBottom="85dp"/>
 
                 <TextView
                     style="@style/Action"
