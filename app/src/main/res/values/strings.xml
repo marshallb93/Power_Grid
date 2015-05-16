@@ -6,4 +6,5 @@
     <string name="phase3_txt">Phase 3: Buying Resources</string>
     <string name="phase4_txt">Phase 4: Building</string>
     <string name="special_txt">Special Ability</string>
+    <string name="debug">Debug</string>
 </resources>

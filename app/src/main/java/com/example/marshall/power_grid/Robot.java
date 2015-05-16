@@ -1,19 +1,18 @@
 package com.example.marshall.power_grid;
 
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
 import android.app.Activity;
 import android.content.Context;
 import android.media.MediaPlayer;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.FloatMath;
 import android.view.View;
-import android.widget.FrameLayout;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.Random;
@@ -73,11 +72,25 @@ public class Robot extends Activity {
     private ShakeListener mShakeListener;
 
     private Boolean visibility = false;
+    private Boolean debug = true;
+
+    private Integer[] behaviour = new Integer[5];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_robot);
+
+        // Debug button
+        if (debug) {
+            findViewById(R.id.debug).setVisibility(View.VISIBLE);
+            final Button button = (Button) findViewById(R.id.debug);
+            button.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    handleShakeEvent();
+                }
+            });
+        }
 
         // ShakeDetector initialization
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -90,6 +103,134 @@ public class Robot extends Activity {
                 handleShakeEvent();
             }
         });
+    }
+
+    // This code is executed on shake, and randomises the robot's behaviour
+    private void handleShakeEvent() {
+
+        initialRandomise();
+        applyDecayingTransition(3000, 200);
+
+    }
+
+    // Set initial behaviours
+    private void initialRandomise() {
+        Random randomGenerator = new Random();
+
+        for (int i = 0; i < 5; i++) {
+            behaviour[i] = randomGenerator.nextInt(6);
+        }
+    }
+
+    private void applyDecayingTransition(final Integer totalTime, final Integer decayRate) {
+
+        // make boxes visible on first shake
+        if (!visibility) {
+
+            findViewById(R.id.head_box).setVisibility(View.VISIBLE);
+
+            findViewById(R.id.shoulders_box).setVisibility(View.VISIBLE);
+
+            findViewById(R.id.torso_box).setVisibility(View.VISIBLE);
+
+            findViewById(R.id.legs_box).setVisibility(View.VISIBLE);
+
+            findViewById(R.id.feet_box).setVisibility(View.VISIBLE);
+
+            visibility = true;
+        }
+
+        if (totalTime > 0) {
+
+            setBehaviour();
+
+            // setup various animations
+            View headBlock = findViewById(R.id.head);
+            Animator headAnim = AnimatorInflater.loadAnimator(this, R.animator.block_rotate_left);
+            headAnim.setTarget(headBlock);
+            headAnim.setDuration(decayRate);
+
+            View shouldersBlock = findViewById(R.id.shoulders);
+            Animator shouldersAnim = AnimatorInflater.loadAnimator(this, R.animator.block_rotate_right);
+            shouldersAnim.setTarget(shouldersBlock);
+            shouldersAnim.setDuration(decayRate);
+
+            View torsoBlock = findViewById(R.id.torso);
+            Animator torsoAnim = AnimatorInflater.loadAnimator(this, R.animator.block_rotate_left);
+            torsoAnim.setTarget(torsoBlock);
+            torsoAnim.setDuration(decayRate);
+
+            View legsBlock = findViewById(R.id.legs);
+            Animator legsAnim = AnimatorInflater.loadAnimator(this, R.animator.block_rotate_right);
+            legsAnim.setTarget(legsBlock);
+            legsAnim.setDuration(decayRate);
+
+            View feetBlock = findViewById(R.id.feet);
+            Animator feetAnim = AnimatorInflater.loadAnimator(this, R.animator.block_rotate_left);
+            feetAnim.setTarget(feetBlock);
+            feetAnim.setDuration(decayRate);
+
+            headAnim.addListener(new Animator.AnimatorListener() {
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    playClick();
+                    incrementBehaviour();
+                    applyDecayingTransition(totalTime - decayRate, decayRate + 30);
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+                }
+
+                @Override
+                public void onAnimationStart(Animator animation) {
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+                }
+
+            });
+
+            headAnim.start();
+            shouldersAnim.start();
+            torsoAnim.start();
+            legsAnim.start();
+            feetAnim.start();
+        }
+    }
+
+    private void setBehaviour() {
+
+        final TextView headText = (TextView) findViewById(R.id.head_txt);
+        headText.setText(head[behaviour[0]]);
+
+        final TextView shouldersText = (TextView) findViewById(R.id.shoulders_txt);
+        shouldersText.setText(shoulders[behaviour[1]]);
+
+        final TextView torsoText = (TextView) findViewById(R.id.torso_txt);
+        torsoText.setText(torso[behaviour[2]]);
+
+        final TextView legsText = (TextView) findViewById(R.id.legs_txt);
+        legsText.setText(legs[behaviour[3]]);
+
+        final TextView feetText = (TextView) findViewById(R.id.feet_txt);
+        feetText.setText(feet[behaviour[4]]);
+    }
+
+    // change behaviour
+    private void incrementBehaviour() {
+
+        for (int i = 0; i < 5; i++) {
+            behaviour[i] = (behaviour[i] + 1) % 6;
+        }
+    }
+
+    // plays click sound effect
+    private void playClick() {
+        MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.click);
+        mp.start();
     }
 
     @Override
@@ -105,64 +246,6 @@ public class Robot extends Activity {
         mSensorManager.unregisterListener(mShakeListener);
         super.onPause();
     }
-
-    // This code is executed on shake, and randomises the robot's behaviour
-    public void handleShakeEvent() {
-
-        randomiseBehaviour();
-
-    }
-
-    private void randomiseBehaviour() {
-
-        Random randomGenerator = new Random();
-
-        final TextView headText = (TextView) findViewById(R.id.head_txt);
-        headText.setText(head[randomGenerator.nextInt(6)]);
-
-        final TextView shouldersText = (TextView) findViewById(R.id.shoulders_txt);
-        shouldersText.setText(shoulders[randomGenerator.nextInt(6)]);
-
-        final TextView torsoText = (TextView) findViewById(R.id.torso_txt);
-        torsoText.setText(torso[randomGenerator.nextInt(6)]);
-
-        final TextView legsText = (TextView) findViewById(R.id.legs_txt);
-        legsText.setText(legs[randomGenerator.nextInt(6)]);
-
-        final TextView feetText = (TextView) findViewById(R.id.feet_txt);
-        feetText.setText(feet[randomGenerator.nextInt(6)]);
-
-        // make boxes visible on first shake
-        if (visibility == false) {
-
-            findViewById(R.id.head_box).setVisibility(View.VISIBLE);
-
-            findViewById(R.id.shoulders_box).setVisibility(View.VISIBLE);
-
-            findViewById(R.id.torso_box).setVisibility(View.VISIBLE);
-
-            findViewById(R.id.legs_box).setVisibility(View.VISIBLE);
-
-            findViewById(R.id.feet_box).setVisibility(View.VISIBLE);
-
-            visibility = true;
-        }
-
-        playClick();
-
-        /* DEBUG
-
-        int i = 0;
-        headText.setText(head[i]);
-        shouldersText.setText(shoulders[i]);
-        torsoText.setText(torso[i]);
-        legsText.setText(legs[i]);
-        feetText.setText(feet[i]);*/
-    }
-
-    // plays click sound effect
-    private void playClick() {
-        MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.click);
-        mp.start();
-    }
 }
+
+
