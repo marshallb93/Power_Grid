@@ -1,6 +1,8 @@
 package com.example.marshall.power_grid;
 
+import android.app.Activity;
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,12 +12,14 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.FloatMath;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import java.util.Random;
 
-
-public class Robot extends ActionBarActivity {
+// The main class for running the robot
+public class Robot extends Activity {
 
     // The following arrays contain the available robot actions
     private String[] head = {
@@ -68,6 +72,8 @@ public class Robot extends ActionBarActivity {
     private Sensor mAccelerometer;
     private ShakeListener mShakeListener;
 
+    private Boolean visibility = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,30 +90,6 @@ public class Robot extends ActionBarActivity {
                 handleShakeEvent();
             }
         });
-
-        handleShakeEvent();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_robot, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -127,6 +109,12 @@ public class Robot extends ActionBarActivity {
     // This code is executed on shake, and randomises the robot's behaviour
     public void handleShakeEvent() {
 
+        randomiseBehaviour();
+
+    }
+
+    private void randomiseBehaviour() {
+
         Random randomGenerator = new Random();
 
         final TextView headText = (TextView) findViewById(R.id.head_txt);
@@ -144,5 +132,37 @@ public class Robot extends ActionBarActivity {
         final TextView feetText = (TextView) findViewById(R.id.feet_txt);
         feetText.setText(feet[randomGenerator.nextInt(6)]);
 
+        // make boxes visible on first shake
+        if (visibility == false) {
+
+            findViewById(R.id.head_box).setVisibility(View.VISIBLE);
+
+            findViewById(R.id.shoulders_box).setVisibility(View.VISIBLE);
+
+            findViewById(R.id.torso_box).setVisibility(View.VISIBLE);
+
+            findViewById(R.id.legs_box).setVisibility(View.VISIBLE);
+
+            findViewById(R.id.feet_box).setVisibility(View.VISIBLE);
+
+            visibility = true;
+        }
+
+        playClick();
+
+        /* DEBUG
+
+        int i = 0;
+        headText.setText(head[i]);
+        shouldersText.setText(shoulders[i]);
+        torsoText.setText(torso[i]);
+        legsText.setText(legs[i]);
+        feetText.setText(feet[i]);*/
+    }
+
+    // plays click sound effect
+    private void playClick() {
+        MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.click);
+        mp.start();
     }
 }
